@@ -60,7 +60,7 @@ theorem postcomp_mkCLM_surjective {L : Type*} [Semiring L] (σ : L →+* K)
 
 /-- The `SeparationQuotient.outCLM K E` map is a topological embedding. -/
 theorem outCLM_embedding : Embedding (outCLM K E) :=
-  Function.LeftInverse.embedding (mk_outCLM K) continuous_mk (map_continuous _)
+  Function.LeftInverse.isEmbedding (mk_outCLM K) continuous_mk (map_continuous _)
 
 theorem outCLM_injective : Function.Injective (outCLM K E) :=
   (outCLM_embedding K E).injective
