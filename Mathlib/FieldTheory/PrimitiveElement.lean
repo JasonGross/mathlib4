@@ -409,3 +409,56 @@ theorem primitive_element_iff_algHom_eq_of_eval (α : E)
 end Field
 
 end iff
+
+variable (K : Type*) [Field K]
+
+variable [IsAlgClosed K]
+
+lemma aux1
+    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
+    [Fintype (K' →ₐ[K] K')] :
+    Fintype.card (K' →ₐ[K] K') = 1 := by
+  apply le_antisymm
+  · convert le_of_eq_of_le (AlgHom.card K K' K') ?_
+    · apply IsAlgClosure.isAlgClosed K
+    let e := (IsAlgClosure.equiv K K K').toLinearEquiv
+    rw [← e.finrank_eq, FiniteDimensional.finrank_self]
+  · rw [Nat.one_le_iff_ne_zero]
+    apply Fintype.card_ne_zero
+
+instance
+    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
+    [Fintype (K' →ₐ[K] K')] :
+    Subsingleton (K' →ₐ[K] K') :=
+  Fintype.card_le_one_iff_subsingleton.mp (aux1 ..).le
+
+instance AlgHom.instUnique
+    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
+    [Fintype (K' →ₐ[K] K')] :
+    Unique (K' →ₐ[K] K') :=
+  uniqueOfSubsingleton (.id _ _)
+
+lemma aux
+    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
+    [Fintype (K' ≃ₐ[K] K')]
+    [Fintype (K' →ₐ[K] K')] :
+    Fintype.card (K' ≃ₐ[K] K') = 1 := by
+  apply le_antisymm
+  · rw [← aux1 K K']
+    apply (AlgEquiv.card_le _ _ _)
+  · rw [Nat.one_le_iff_ne_zero]
+    apply Fintype.card_ne_zero
+
+instance
+    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
+    [Fintype (K' ≃ₐ[K] K')]
+    [Fintype (K' →ₐ[K] K')] :
+    Subsingleton (K' ≃ₐ[K] K') :=
+  Fintype.card_le_one_iff_subsingleton.mp (aux ..).le
+
+instance AlgEquiv.instUnique
+    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
+    [Fintype (K' ≃ₐ[K] K')]
+    [Fintype (K' →ₐ[K] K')] :
+    Unique (K' ≃ₐ[K] K') :=
+  uniqueOfSubsingleton .refl

@@ -463,3 +463,7 @@ theorem Algebra.IsAlgebraic.algHomEquivAlgHomOfSplits_apply_apply (L : Type*) [F
     Algebra.IsAlgebraic.algHomEquivAlgHomOfSplits A L hL f x = algebraMap L A (f x) := rfl
 
 end Algebra.IsAlgebraic
+
+instance (K K' : Type*) [Field K] [IsAlgClosed K] [Field K'] [Algebra K K'] [IsAlgClosure K K'] :
+    FiniteDimensional K K' :=
+  .equiv (M := K) (IsAlgClosure.equiv K K K')
