@@ -355,13 +355,26 @@ theorem AlgHom.card (K : Type*) [Field K] [IsAlgClosed K] [Algebra F K] :
     (Algebra.IsSeparable.isSeparable _ _) (IsAlgClosed.splits_codomain _)).trans
       (PowerBasis.finrank _).symm
 
+@[simp] -- TODO swap
+theorem AlgHom.natCard (K : Type*) [Field K] [IsAlgClosed K] [Algebra F K] :
+    Nat.card (E →ₐ[F] K) = finrank F E := by
+  convert (AlgHom.card_of_powerBasis (L := K) (Field.powerBasisOfFiniteOfSeparable F E)
+    (Algebra.IsSeparable.isSeparable _ _) (IsAlgClosed.splits_codomain _)).trans
+      (PowerBasis.finrank _).symm
+  rw [Fintype.card_eq_nat_card]
+
+@[simp]
+theorem AlgHom.natCard_of_splits (L : Type*) [Field L] [Algebra F L]
+    (hL : ∀ x : E, (minpoly F x).Splits (algebraMap F L)) :
+    Nat.card (E →ₐ[F] L) = finrank F E := by
+  rw [Nat.card_congr <| Algebra.IsAlgebraic.algHomEquivAlgHomOfSplits (AlgebraicClosure L) _ hL,
+    AlgHom.natCard F E (AlgebraicClosure L)]
+
 @[simp]
 theorem AlgHom.card_of_splits (L : Type*) [Field L] [Algebra F L]
     (hL : ∀ x : E, (minpoly F x).Splits (algebraMap F L)) :
     Fintype.card (E →ₐ[F] L) = finrank F E := by
-  rw [← Fintype.ofEquiv_card <| Algebra.IsAlgebraic.algHomEquivAlgHomOfSplits
-    (AlgebraicClosure L) _ hL]
-  convert AlgHom.card F E (AlgebraicClosure L)
+  rw [Fintype.card_eq_nat_card, AlgHom.natCard_of_splits F E L hL]
 
 section iff
 
@@ -410,55 +423,26 @@ end Field
 
 end iff
 
-variable (K : Type*) [Field K]
+variable (K K' : Type*) [Field K] [IsAlgClosed K] [Field K'] [Algebra K K'] [IsAlgClosure K K']
 
-variable [IsAlgClosed K]
+lemma aux1 : Nat.card (K' →ₐ[K] K') = 1 := by
+  have := IsAlgClosure.isAlgClosed K (K := K')
+  rw [AlgHom.natCard K K' K']
+  let e := (IsAlgClosure.equiv K K K').toLinearEquiv
+  rw [← e.finrank_eq, FiniteDimensional.finrank_self]
 
-lemma aux1
-    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
-    [Fintype (K' →ₐ[K] K')] :
-    Fintype.card (K' →ₐ[K] K') = 1 := by
-  apply le_antisymm
-  · convert le_of_eq_of_le (AlgHom.card K K' K') ?_
-    · apply IsAlgClosure.isAlgClosed K
-    let e := (IsAlgClosure.equiv K K K').toLinearEquiv
-    rw [← e.finrank_eq, FiniteDimensional.finrank_self]
-  · rw [Nat.one_le_iff_ne_zero]
-    apply Fintype.card_ne_zero
+instance : Subsingleton (K' →ₐ[K] K') :=
+  Finite.card_le_one_iff_subsingleton.mp (aux1 ..).le
 
-instance
-    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
-    [Fintype (K' →ₐ[K] K')] :
-    Subsingleton (K' →ₐ[K] K') :=
-  Fintype.card_le_one_iff_subsingleton.mp (aux1 ..).le
-
-instance AlgHom.instUnique
-    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
-    [Fintype (K' →ₐ[K] K')] :
-    Unique (K' →ₐ[K] K') :=
+instance AlgHom.instUnique : Unique (K' →ₐ[K] K') :=
   uniqueOfSubsingleton (.id _ _)
 
-lemma aux
-    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
-    [Fintype (K' ≃ₐ[K] K')]
-    [Fintype (K' →ₐ[K] K')] :
-    Fintype.card (K' ≃ₐ[K] K') = 1 := by
-  apply le_antisymm
-  · rw [← aux1 K K']
-    apply (AlgEquiv.card_le _ _ _)
-  · rw [Nat.one_le_iff_ne_zero]
-    apply Fintype.card_ne_zero
+lemma aux : Nat.card (K' ≃ₐ[K] K') ≤ 1 := by
+  rw [← aux1 K K']
+  exact AlgEquiv.natCard_le _ _ _
 
-instance
-    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
-    [Fintype (K' ≃ₐ[K] K')]
-    [Fintype (K' →ₐ[K] K')] :
-    Subsingleton (K' ≃ₐ[K] K') :=
-  Fintype.card_le_one_iff_subsingleton.mp (aux ..).le
+instance : Subsingleton (K' ≃ₐ[K] K') :=
+  Finite.card_le_one_iff_subsingleton.mp (aux ..)
 
-instance AlgEquiv.instUnique
-    (K') [Field K'] [Algebra K K'] [IsAlgClosure K K']
-    [Fintype (K' ≃ₐ[K] K')]
-    [Fintype (K' →ₐ[K] K')] :
-    Unique (K' ≃ₐ[K] K') :=
+instance AlgEquiv.instUnique : Unique (K' ≃ₐ[K] K') :=
   uniqueOfSubsingleton .refl

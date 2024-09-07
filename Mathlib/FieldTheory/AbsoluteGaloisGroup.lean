@@ -44,7 +44,7 @@ noncomputable instance : Group (G_K K) := AlgEquiv.aut
 
 namespace absoluteGaloisGroup
 
-instance [IsAlgClosed K] : Unique (G_K K) := instUnique _ _
+instance [IsAlgClosed K] : Unique (G_K K) := AlgEquiv.instUnique _ _
 
 end absoluteGaloisGroup
 
