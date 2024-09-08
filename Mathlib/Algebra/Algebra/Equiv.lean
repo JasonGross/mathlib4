@@ -5,9 +5,8 @@ Authors: Kenny Lau, Yury Kudryashov
 -/
 import Mathlib.Algebra.Algebra.Hom
 import Mathlib.Algebra.Ring.Aut
-import Mathlib.Data.Finite.Card
 
--- assert_not_exists Fintype.card
+assert_not_exists Cardinal
 
 /-!
 # Isomorphisms of `R`-algebras
