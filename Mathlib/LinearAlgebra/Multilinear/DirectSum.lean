@@ -5,6 +5,7 @@ Authors: Sophie Morel
 -/
 import Mathlib.Algebra.DirectSum.Module
 import Mathlib.LinearAlgebra.Multilinear.Basic
+import Mathlib.Data.DFinsupp.Multilinear
 
 /-!
 # Multilinear maps from direct sums
@@ -52,53 +53,24 @@ private theorem fromDirectSum_aux2 (x : Π i, ⨁ (j : κ i), M i j) (i : ι) (p
 /-- Given a family indexed by `p : Π i : ι, κ i` of multilinear maps on the
 `fun i ↦ M i (p i)`, construct a multilinear map on `fun i ↦ ⨁ j : κ i, M i j`.-/
 def fromDirectSum (f : Π (p : Π i, κ i), MultilinearMap R (fun i ↦ M i (p i)) M') :
-    MultilinearMap R (fun i ↦ ⨁ j : κ i, M i j) M' where
-  toFun x := ∑ p in Fintype.piFinset (fun i ↦ (x i).support), f p (fun i ↦ x i (p i))
-  map_add' {inst} x i a b := by
-    cases Subsingleton.elim inst (by clear inst; assumption)
-    simp only
-    conv_lhs => rw [← Finset.sum_union_eq_right (s₁ := Fintype.piFinset
-        (fun j ↦ (update x i a j).support) ∪ Fintype.piFinset (fun j ↦ (update x i b j).support))
-        (fun p _ hp ↦ fromDirectSum_aux1 _ _ f _ hp)]
-    rw [Finset.sum_congr rfl (fun p _ ↦ by rw [fromDirectSum_aux2 _ _ _ p (a + b)])]
-    erw [Finset.sum_congr rfl (fun p _ ↦ (f p).map_add _ i (a (p i)) (b (p i)))]
-    rw [Finset.sum_add_distrib]
-    congr 1
-    · conv_lhs => rw [← Finset.sum_congr rfl (fun p _ ↦ by rw [← fromDirectSum_aux2 _ _ _ p a]),
-                    Finset.sum_congr (Finset.union_assoc _ _ _) (fun _ _ ↦ rfl)]
-      rw [Finset.sum_union_eq_left (fun p _ hp ↦ fromDirectSum_aux1 _ _ f _ hp)]
-    · conv_lhs => rw [← Finset.sum_congr rfl (fun p _ ↦ by rw [← fromDirectSum_aux2 _ _ _ p b]),
-        Finset.sum_congr (Finset.union_assoc _ _ _) (fun _ _ ↦ rfl),
-        Finset.sum_congr (Finset.union_comm _ _) (fun _ _ ↦ rfl),
-        Finset.sum_congr (Finset.union_assoc _ _ _) (fun _ _ ↦ rfl)]
-      rw [Finset.sum_union_eq_left (fun p _ hp ↦ fromDirectSum_aux1 _ _ f _ hp)]
-  map_smul' {inst} x i c a := by
-    cases Subsingleton.elim inst (by clear inst; assumption)
-    simp only
-    conv_lhs => rw [← Finset.sum_union_eq_right (s₁ := Fintype.piFinset
-      (fun j ↦ (update x i a j).support))
-        (fun p _ hp ↦ fromDirectSum_aux1 _ _ f _ hp),
-      Finset.sum_congr rfl (fun p _ ↦ by rw [fromDirectSum_aux2 _ _ _ p _])]
-    erw [Finset.sum_congr rfl (fun p _ ↦ (f p).map_smul _ i c (a (p i)))]
-    rw [← Finset.smul_sum]
-    conv_lhs => rw [← Finset.sum_congr rfl (fun p _ ↦ by rw [← fromDirectSum_aux2 _ _ _ p _]),
-      Finset.sum_union_eq_left (fun p _ hp ↦ fromDirectSum_aux1 _ _ f _ hp)]
+    MultilinearMap R (fun i ↦ ⨁ j : κ i, M i j) M' :=
+  (DirectSum.toModule _ _ _ fun _ => .id).compMultilinearMap <| DFinsupp.piMultilinear f
 
-@[simp]
 theorem fromDirectSum_apply (f : Π (p : Π i, κ i), MultilinearMap R (fun i ↦ M i (p i)) M')
     (x : Π i, ⨁ (j : κ i), M i j) :
     fromDirectSum R κ f x =
-      ∑ p in Fintype.piFinset (fun i ↦ (x i).support), f p (fun i ↦ x i (p i)) :=
-  rfl
+      ∑ p in Fintype.piFinset (fun i ↦ (x i).support), f p (fun i ↦ x i (p i)) := by
+  classical
+  refine (DFinsupp.sumAddHom_apply _ _).trans ?_
+  change Finset.sum _ _ = _
+  refine Finset.sum_subset (DFinsupp.support_piMultilinear_subset _ _) ?_
+  simp
 
 /-- The construction `MultilinearMap.fromDirectSum`, as an `R`-linear map.-/
 def fromDirectSumₗ : ((p : Π i, κ i) → MultilinearMap R (fun i ↦ M i (p i)) M') →ₗ[R]
     MultilinearMap R (fun i ↦ ⨁ j : κ i, M i j) M' where
   toFun := fromDirectSum R κ
-  map_add' f g := by
-    ext x
-    simp only [fromDirectSum_apply, Pi.add_apply, MultilinearMap.add_apply]
-    rw [Finset.sum_add_distrib]
+  map_add' f g := by simp [fromDirectSum]
   map_smul' c f := by
     ext x
     simp only [fromDirectSum_apply, Pi.smul_apply, MultilinearMap.smul_apply, RingHom.id_apply]
