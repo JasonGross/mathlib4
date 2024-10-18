@@ -805,7 +805,6 @@ theorem compMultilinearMap_add (g : M₂ →ₗ[R] M₃) (f₁ f₂ : Multilinea
 theorem add_compMultilinearMap (g₁ g₂ : M₂ →ₗ[R] M₃) (f: MultilinearMap R M₁ M₂) :
     (g₁ + g₂).compMultilinearMap f = g₁.compMultilinearMap f + g₂.compMultilinearMap f := rfl
 
-
 @[simp]
 theorem compMultilinearMap_smul [Monoid S] [DistribMulAction S M₂] [DistribMulAction S M₃]
     [SMulCommClass R S M₂] [SMulCommClass R S M₃] [CompatibleSMul M₂ M₃ S R]
