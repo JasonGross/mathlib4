@@ -865,12 +865,20 @@ instance : Module S (MultilinearMap R M₁ M₂) :=
 instance [NoZeroSMulDivisors S M₂] : NoZeroSMulDivisors S (MultilinearMap R M₁ M₂) :=
   coe_injective.noZeroSMulDivisors _ rfl coe_smul
 
-variable (R S M₁ M₂ M₃)
-
-section OfSubsingleton
-
 variable [AddCommMonoid M₃] [Module S M₃] [Module R M₃] [SMulCommClass R S M₃]
 
+/-- `LinearMap.compMultilinearMap` as a multilinear map. -/
+@[simps]
+def _root_.LinearMap.compMultilinearMapₗ [Semiring S] [Module S M₂] [Module S M₃]
+    [SMulCommClass R S M₂] [SMulCommClass R S M₃] [LinearMap.CompatibleSMul M₂ M₃ S R]
+    (g : M₂ →ₗ[R] M₃) :
+    MultilinearMap R M₁ M₂ →ₗ[S] MultilinearMap R M₁ M₃ where
+  toFun := g.compMultilinearMap
+  map_add' := g.compMultilinearMap_add
+  map_smul' := g.compMultilinearMap_smul
+
+variable (R S M₁ M₂ M₃)
+section OfSubsingleton
 /-- Linear equivalence between linear maps `M₂ →ₗ[R] M₃`
 and one-multilinear maps `MultilinearMap R (fun _ : ι ↦ M₂) M₃`. -/
 @[simps (config := { simpRhs := true })]
