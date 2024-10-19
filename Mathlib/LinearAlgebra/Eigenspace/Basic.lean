@@ -626,8 +626,7 @@ lemma isNilpotent_restrict_maxGenEigenspace_sub_algebraMap [IsNoetherian R M] (f
     IsNilpotent ((f - algebraMap R (End R M) μ).restrict h) := by
   apply isNilpotent_restrict_of_le (q := f.unifEigenspace μ (maxUnifEigenspaceIndex f μ))
     _ (isNilpotent_restrict_unifEigenspace_nat f μ (maxUnifEigenspaceIndex f μ))
-  rw [maxGenEigenspace_eq]
-  exact le_rfl
+  rw [maxGenEigenspace_eq, genEigenspace, OrderHom.coe_mk]
 
 set_option linter.deprecated false in
 /-- The restriction of `f - μ • 1` to the generalized `μ`-eigenspace is nilpotent. -/
