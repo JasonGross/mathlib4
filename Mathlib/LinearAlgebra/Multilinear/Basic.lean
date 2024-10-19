@@ -867,7 +867,8 @@ instance [NoZeroSMulDivisors S M₂] : NoZeroSMulDivisors S (MultilinearMap R M�
 
 variable [AddCommMonoid M₃] [Module S M₃] [Module R M₃] [SMulCommClass R S M₃]
 
-/-- `LinearMap.compMultilinearMap` as a multilinear map. -/
+variable (S) in
+/-- `LinearMap.compMultilinearMap` as an `S`-linear map. -/
 @[simps]
 def _root_.LinearMap.compMultilinearMapₗ [Semiring S] [Module S M₂] [Module S M₃]
     [SMulCommClass R S M₂] [SMulCommClass R S M₃] [LinearMap.CompatibleSMul M₂ M₃ S R]
@@ -878,7 +879,9 @@ def _root_.LinearMap.compMultilinearMapₗ [Semiring S] [Module S M₂] [Module 
   map_smul' := g.compMultilinearMap_smul
 
 variable (R S M₁ M₂ M₃)
+
 section OfSubsingleton
+
 /-- Linear equivalence between linear maps `M₂ →ₗ[R] M₃`
 and one-multilinear maps `MultilinearMap R (fun _ : ι ↦ M₂) M₃`. -/
 @[simps (config := { simpRhs := true })]
@@ -941,8 +944,6 @@ def constLinearEquivOfIsEmpty [IsEmpty ι] : M₂ ≃ₗ[S] MultilinearMap R M�
   invFun f := f 0
   left_inv _ := rfl
   right_inv f := ext fun _ => MultilinearMap.congr_arg f <| Subsingleton.elim _ _
-
-variable [AddCommMonoid M₃] [Module R M₃] [Module S M₃] [SMulCommClass R S M₃]
 
 /-- `MultilinearMap.domDomCongr` as a `LinearEquiv`. -/
 @[simps apply symm_apply]

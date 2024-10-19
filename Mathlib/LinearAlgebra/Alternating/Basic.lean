@@ -412,7 +412,7 @@ variable {S : Type*} {N₂ : Type*} [AddCommMonoid N₂] [Module R N₂]
 /-- Composing an alternating map with a linear map on the left gives again an alternating map. -/
 def compAlternatingMap (g : N →ₗ[R] N₂) (f : M [⋀^ι]→ₗ[R] N) : M [⋀^ι]→ₗ[R] N₂ where
   __ := g.compMultilinearMap (f : MultilinearMap R (fun _ : ι => M) N)
-  map_eq_zero_of_eq' := fun v i j h hij => by simp [f.map_eq_zero_of_eq v h hij]
+  map_eq_zero_of_eq' v i j h hij := by simp [f.map_eq_zero_of_eq v h hij]
 
 @[simp]
 theorem coe_compAlternatingMap (g : N →ₗ[R] N₂) (f : M [⋀^ι]→ₗ[R] N) :
@@ -453,6 +453,17 @@ theorem compAlternatingMap_smul [Monoid S] [DistribMulAction S N] [DistribMulAct
 theorem smul_compAlternatingMap [Monoid S] [DistribMulAction S N₂] [SMulCommClass R S N₂]
     (g : N →ₗ[R] N₂) (s : S) (f : M [⋀^ι]→ₗ[R] N) :
     (s • g).compAlternatingMap f = s • g.compAlternatingMap f := rfl
+
+variable (S) in
+/-- `LinearMap.compAlternatingMap` as an `S`-linear map. -/
+@[simps]
+def compAlternatingMapₗ [Semiring S] [Module S N] [Module S N₂]
+    [SMulCommClass R S N] [SMulCommClass R S N₂] [LinearMap.CompatibleSMul N N₂ S R]
+    (g : N →ₗ[R] N₂) :
+    (M [⋀^ι]→ₗ[R] N) →ₗ[S] (M [⋀^ι]→ₗ[R] N₂) where
+  toFun := g.compAlternatingMap
+  map_add' := g.compAlternatingMap_add
+  map_smul' := g.compAlternatingMap_smul
 
 theorem smulRight_eq_comp {R M₁ M₂ ι : Type*} [CommSemiring R] [AddCommMonoid M₁]
     [AddCommMonoid M₂] [Module R M₁] [Module R M₂] (f : M₁ [⋀^ι]→ₗ[R] R) (z : M₂) :
