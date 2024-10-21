@@ -58,7 +58,7 @@ theorem inclusion_exclusion_sum_biUnion (s : Finset ι) (f : ι → Finset α) (
       split_ifs with ht
       · obtain ⟨i, hi⟩ := ht
         simp only [prod_const_one, mul_one, prod_indicator_apply]
-        simp only [smul_sum, Units.smul_def, coe_negOnepow_natCast, reduceNeg, Set.indicator,
+        simp only [smul_sum, Units.smul_def, coe_negOnePow_natCast, reduceNeg, Set.indicator,
           inf_set_eq_iInter, Set.mem_iInter, mem_coe, Pi.one_apply, mul_ite, mul_one, mul_zero,
           ite_smul, zero_smul, sum_ite, not_forall, sum_const_zero, add_zero]
         congr!
