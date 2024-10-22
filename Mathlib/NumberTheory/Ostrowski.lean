@@ -304,9 +304,21 @@ def mulRingNorm_real : MulRingNorm ℚ where
     simp only [Rat.cast_mul]
     exact_mod_cast abs_mul
 
+@[simp]
+theorem coe_mk (R : Type*) [NonAssocRing R] (f : MulRingSeminorm R) (hf) :
+  ⇑(MulRingNorm.mk f hf) = f := rfl
+
+@[simp]
+theorem coe_mk' (R : Type*) [NonAssocRing R] (f : AddGroupSeminorm R) (one mul) :
+  ⇑(MulRingSeminorm.mk f one mul) = f := rfl
+
+#check AddGroupSeminorm.mk
+@[simp]
+theorem coe_mk'' (R : Type*) [NonAssocRing R] (f : R → ℝ) (zero add neg) :
+  ⇑(AddGroupSeminorm.mk f zero add neg) = f := rfl
+
 @[simp] lemma mul_ring_norm_eq_abs (r : ℚ) : mulRingNorm_real r = |r| := by
-  simp only [Rat.cast_abs]
-  rfl
+  simp [mulRingNorm_real]
 
 -- ## Preliminary result
 
