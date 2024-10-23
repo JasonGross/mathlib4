@@ -151,7 +151,7 @@ theorem _root_.Topology.IsClosedEmbedding.polishSpace [TopologicalSpace α] [Top
   infer_instance
 
 @[deprecated (since := "2024-10-20")]
-alias _root_.ClosedEmbedding.polishSpace := _root_.IsClosedEmbedding.polishSpace
+alias _root_.ClosedEmbedding.polishSpace := IsClosedEmbedding.polishSpace
 
 /-- Any countable discrete space is Polish. -/
 instance (priority := 50) polish_of_countable [TopologicalSpace α]

@@ -37,7 +37,7 @@ class IsPreimmersion {X Y : Scheme} (f : X ⟶ Y) : Prop where
   base_embedding : IsEmbedding f.base
   surj_on_stalks : ∀ x, Function.Surjective (f.stalkMap x)
 
-lemma Scheme.Hom.isEmbedding {X Y : Scheme} (f : Hom X Y) [IsPreimmersion f] : Embedding f.base :=
+lemma Scheme.Hom.isEmbedding {X Y : Scheme} (f : Hom X Y) [IsPreimmersion f] : IsEmbedding f.base :=
   IsPreimmersion.base_embedding
 
 lemma Scheme.Hom.stalkMap_surjective {X Y : Scheme} (f : Hom X Y) [IsPreimmersion f] (x) :
@@ -97,7 +97,7 @@ theorem comp_iff {X Y Z : Scheme} (f : X ⟶ Y) (g : Y ⟶ Z) [IsPreimmersion g]
   ⟨fun _ ↦ of_comp f g, fun _ ↦ inferInstance⟩
 
 lemma Spec_map_iff {R S : CommRingCat.{u}} (f : R ⟶ S) :
-    IsPreimmersion (Spec.map f) ↔ Embedding (PrimeSpectrum.comap f) ∧ f.SurjectiveOnStalks := by
+    IsPreimmersion (Spec.map f) ↔ IsEmbedding (PrimeSpectrum.comap f) ∧ f.SurjectiveOnStalks := by
   haveI : (RingHom.toMorphismProperty <| fun f ↦ Function.Surjective f).RespectsIso := by
     rw [← RingHom.toMorphismProperty_respectsIso_iff]
     exact RingHom.surjective_respectsIso
@@ -111,7 +111,7 @@ lemma Spec_map_iff {R S : CommRingCat.{u}} (f : R ⟶ S) :
     exact h₂ x.asIdeal x.isPrime
 
 lemma mk_Spec_map {R S : CommRingCat.{u}} {f : R ⟶ S}
-    (h₁ : Embedding (PrimeSpectrum.comap f)) (h₂ : f.SurjectiveOnStalks) :
+    (h₁ : IsEmbedding (PrimeSpectrum.comap f)) (h₂ : f.SurjectiveOnStalks) :
     IsPreimmersion (Spec.map f) :=
   (Spec_map_iff f).mpr ⟨h₁, h₂⟩
 
@@ -119,7 +119,7 @@ lemma of_isLocalization {R S : Type u} [CommRing R] (M : Submonoid R) [CommRing 
     [Algebra R S] [IsLocalization M S] :
     IsPreimmersion (Spec.map (CommRingCat.ofHom <| algebraMap R S)) :=
   IsPreimmersion.mk_Spec_map
-    (PrimeSpectrum.localization_comap_embedding (R := R) S M)
+    (PrimeSpectrum.localization_comap_isEmbedding (R := R) S M)
     (RingHom.surjectiveOnStalks_of_isLocalization (M := M) S)
 
 end IsPreimmersion

@@ -242,12 +242,12 @@ theorem isEmbedding_toContinuousMap :
 
 @[to_additive]
 instance instContinuousEvalConst : ContinuousEvalConst (ContinuousMonoidHom A B) A B :=
-  .of_continuous_forget (inducing_toContinuousMap A B).continuous
+  .of_continuous_forget (isInducing_toContinuousMap A B).continuous
 
 @[to_additive]
 instance instContinuousEval [LocallyCompactPair A B] :
     ContinuousEval (ContinuousMonoidHom A B) A B :=
-  .of_continuous_forget (inducing_toContinuousMap A B).continuous
+  .of_continuous_forget (isInducing_toContinuousMap A B).continuous
 
 @[to_additive]
 lemma range_toContinuousMap :
