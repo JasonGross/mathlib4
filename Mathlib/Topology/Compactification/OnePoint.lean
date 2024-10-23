@@ -513,7 +513,7 @@ example [WeaklyLocallyCompactSpace X] [T2Space X] : T4Space (OnePoint X) := infe
 
 /-- If `X` is not a compact space, then `OnePoint X` is a connected space. -/
 instance [PreconnectedSpace X] [NoncompactSpace X] : ConnectedSpace (OnePoint X) where
-  toPreconnectedSpace := isDenseEmbedding_coe.toIsDenseInducing.preconnectedSpace
+  toPreconnectedSpace := isDenseEmbedding_coe.isDenseInducing.preconnectedSpace
   toNonempty := inferInstance
 
 /-- If `X` is an infinite type with discrete topology (e.g., `ℕ`), then the identity map from

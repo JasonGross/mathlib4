@@ -111,7 +111,7 @@ instance : (topologically IsEmbedding).RespectsIso :=
   topologically_respectsIso _ (fun e ↦ e.isEmbedding) (fun _ _ hf hg ↦ hg.comp hf)
 
 instance isEmbedding_isLocalAtTarget : IsLocalAtTarget (topologically IsEmbedding) :=
-  topologically_isLocalAtTarget' _ fun _ _ _ ↦ embedding_iff_embedding_of_iSup_eq_top
+  topologically_isLocalAtTarget' _ fun _ _ _ ↦ isEmbedding_iff_isEmbedding_of_iSup_eq_top
 
 end IsEmbedding
 
