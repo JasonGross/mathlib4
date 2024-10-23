@@ -55,7 +55,7 @@ sets).
 uniform convergence, bounded convergence
 -/
 
-open Bornology Topology
+open Bornology Filter Function Set Topology
 open scoped UniformConvergence Uniformity
 
 section General
@@ -126,6 +126,10 @@ theorem isUniformEmbedding_coeFn [UniformSpace F] [UniformAddGroup F] (𝔖 : Se
 @[deprecated (since := "2024-10-01")]
 alias uniformEmbedding_coeFn := isUniformEmbedding_coeFn
 
+theorem isEmbedding_coeFn [UniformSpace F] [UniformAddGroup F] (𝔖 : Set (Set E)) :
+    IsEmbedding (X := UniformConvergenceCLM σ F 𝔖) (Y := E →ᵤ[𝔖] F)
+      (UniformOnFun.ofFun 𝔖 ∘ DFunLike.coe) :=
+  IsUniformEmbedding.isEmbedding (isUniformEmbedding_coeFn _ _ _)
 
 instance instAddCommGroup [TopologicalSpace F] [TopologicalAddGroup F] (𝔖 : Set (Set E)) :
     AddCommGroup (UniformConvergenceCLM σ F 𝔖) := ContinuousLinearMap.addCommGroup
@@ -154,7 +158,7 @@ theorem continuousEvalConst [TopologicalSpace F] [TopologicalAddGroup F]
     letI : UniformSpace F := TopologicalAddGroup.toUniformSpace F
     haveI : UniformAddGroup F := comm_topologicalAddGroup_is_uniform
     exact (UniformOnFun.uniformContinuous_eval h𝔖 x).continuous.comp
-      (embedding_coeFn σ F 𝔖).continuous
+      (isEmbedding_coeFn σ F 𝔖).continuous
 
 theorem t2Space [TopologicalSpace F] [TopologicalAddGroup F] [T2Space F]
     (𝔖 : Set (Set E)) (h𝔖 : ⋃₀ 𝔖 = univ) : T2Space (UniformConvergenceCLM σ F 𝔖) := by
@@ -207,7 +211,7 @@ theorem nhds_zero_eq_of_basis [TopologicalSpace F] [TopologicalAddGroup F] (𝔖
         𝓟 {f : UniformConvergenceCLM σ F 𝔖 | MapsTo f s (b i)} := by
   letI : UniformSpace F := TopologicalAddGroup.toUniformSpace F
   haveI : UniformAddGroup F := comm_topologicalAddGroup_is_uniform
-  rw [(embedding_coeFn σ F 𝔖).toInducing.nhds_eq_comap,
+  rw [(isEmbedding_coeFn σ F 𝔖).isInducing.nhds_eq_comap,
     UniformOnFun.nhds_eq_of_basis _ _ h.uniformity_of_nhds_zero]
   simp [MapsTo]
 

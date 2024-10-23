@@ -6,7 +6,7 @@ Authors: Yury Kudryashov
 import Mathlib.Topology.Algebra.Module.Multilinear.Topology
 import Mathlib.Topology.Algebra.Module.Alternating.Basic
 
-/-!
+  /-!pconnât
 # Topology on continuous alternating maps
 
 In this file we define `UniformSpace` and `TopologicalSpace` structures
@@ -119,9 +119,6 @@ end UniformAddGroup
 
 variable [TopologicalSpace F] [TopologicalAddGroup F]
 
-instance instTopologicalSpace : TopologicalSpace (E [⋀^ι]→L[𝕜] F) :=
-  .induced toContinuousMultilinearMap inferInstance
-
 lemma isEmbedding_toContinuousMultilinearMap :
     IsEmbedding (toContinuousMultilinearMap : (E [⋀^ι]→L[𝕜] F → _)) :=
   letI := TopologicalAddGroup.toUniformSpace F
@@ -129,7 +126,7 @@ lemma isEmbedding_toContinuousMultilinearMap :
   isUniformEmbedding_toContinuousMultilinearMap.isEmbedding
 
 instance instTopologicalAddGroup : TopologicalAddGroup (E [⋀^ι]→L[𝕜] F) :=
-  embedding_toContinuousMultilinearMap.topologicalAddGroup
+  isEmbedding_toContinuousMultilinearMap.topologicalAddGroup
     (toContinuousMultilinearMapLinear (R := ℕ))
 
 @[continuity, fun_prop]

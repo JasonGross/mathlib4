@@ -51,7 +51,7 @@ instance : MetrizableSpace ENNReal :=
   orderIsoUnitIntervalBirational.toHomeomorph.isEmbedding.metrizableSpace
 
 theorem isEmbedding_coe : IsEmbedding ((↑) : ℝ≥0 → ℝ≥0∞) :=
-  coe_strictMono.embedding_of_ordConnected <| by rw [range_coe']; exact ordConnected_Iio
+  coe_strictMono.isEmbedding_of_ordConnected <| by rw [range_coe']; exact ordConnected_Iio
 
 theorem isOpen_ne_top : IsOpen { a : ℝ≥0∞ | a ≠ ∞ } := isOpen_ne
 

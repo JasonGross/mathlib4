@@ -30,7 +30,7 @@ instance : OrderTopology ℕ∞ := ⟨rfl⟩
   WithTop.range_coe
 
 theorem isEmbedding_natCast : IsEmbedding ((↑) : ℕ → ℕ∞) :=
-  Nat.strictMono_cast.embedding_of_ordConnected <| range_natCast ▸ ordConnected_Iio
+  Nat.strictMono_cast.isEmbedding_of_ordConnected <| range_natCast ▸ ordConnected_Iio
 
 theorem isOpenEmbedding_natCast : IsOpenEmbedding ((↑) : ℕ → ℕ∞) :=
   ⟨isEmbedding_natCast, range_natCast ▸ isOpen_Iio⟩
