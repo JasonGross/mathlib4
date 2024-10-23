@@ -237,7 +237,7 @@ theorem isTopologicalBasis (hf : IsLocalHomeomorph f) : IsTopologicalBasis
     {U : Set X | ∃ V : Set Y, IsOpen V ∧ ∃ s : C(V,X), f ∘ s = (↑) ∧ Set.range s = U} := by
   refine isTopologicalBasis_of_isOpen_of_nhds ?_ fun x U hx hU ↦ ?_
   · rintro _ ⟨U, hU, s, hs, rfl⟩
-    refine (hf.of_comp (hs ▸ ⟨IsEmbedding.subtypeVal, ?_⟩)
+    refine (isOpenEmbedding_of_comp hf (hs ▸ ⟨IsEmbedding.subtypeVal, ?_⟩)
       s.continuous).isOpen_range
     rwa [Subtype.range_val]
   · obtain ⟨f, hxf, rfl⟩ := hf x

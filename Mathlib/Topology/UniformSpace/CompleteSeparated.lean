@@ -33,13 +33,13 @@ theorem IsUniformEmbedding.isClosedEmbedding [UniformSpace α] [UniformSpace β]
   ⟨hf.isEmbedding, hf.isUniformInducing.isComplete_range.isClosed⟩
 
 @[deprecated (since := "2024-10-20")]
-alias IsUniformEmbedding.toClosedEmbedding := IsUniformEmbedding.toIsClosedEmbedding
+alias IsUniformEmbedding.toClosedEmbedding := IsUniformEmbedding.isClosedEmbedding
 
 @[deprecated (since := "2024-10-01")]
-alias UniformEmbedding.toIsClosedEmbedding := IsUniformEmbedding.toIsClosedEmbedding
+alias UniformEmbedding.toIsClosedEmbedding := IsUniformEmbedding.isClosedEmbedding
 
 @[deprecated (since := "2024-10-20")]
-alias UniformEmbedding.toClosedEmbedding := UniformEmbedding.toIsClosedEmbedding
+alias UniformEmbedding.toClosedEmbedding := IsUniformEmbedding.isClosedEmbedding
 
 namespace IsDenseInducing
 

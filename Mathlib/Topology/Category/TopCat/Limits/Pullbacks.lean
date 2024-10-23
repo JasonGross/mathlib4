@@ -288,7 +288,7 @@ theorem pullback_map_isOpenEmbedding {W X Y Z S T : TopCat.{u}} (f₁ : W ⟶ S)
     (eq₂ : f₂ ≫ i₃ = i₂ ≫ g₂) : IsOpenEmbedding (pullback.map f₁ f₂ g₁ g₂ i₁ i₂ i₃ eq₁ eq₂) := by
   constructor
   · apply
-      pullback_map_embedding_of_embeddings f₁ f₂ g₁ g₂ H₁.isEmbedding H₂.isEmbedding i₃ eq₁ eq₂
+      pullback_map_isEmbedding f₁ f₂ g₁ g₂ H₁.isEmbedding H₂.isEmbedding i₃ eq₁ eq₂
   · rw [range_pullback_map]
     apply IsOpen.inter <;> apply Continuous.isOpen_preimage
     · apply ContinuousMap.continuous_toFun
@@ -316,7 +316,7 @@ theorem fst_isEmbedding_of_right {X Y S : TopCat} (f : X ⟶ S) {g : Y ⟶ S}
   erw [← coe_comp]
   simp
 
-theorem isEmbedding_of_pullback {X Y S : TopCat} {f : X ⟶ S} {g : Y ⟶ S} (H₁ : Embedding f)
+theorem isEmbedding_of_pullback {X Y S : TopCat} {f : X ⟶ S} {g : Y ⟶ S} (H₁ : IsEmbedding f)
     (H₂ : IsEmbedding g) : IsEmbedding (limit.π (cospan f g) WalkingCospan.one) := by
   convert H₂.comp (snd_isEmbedding_of_left H₁ g)
   rw [← coe_comp, ← limit.w _ WalkingCospan.Hom.inr]
@@ -353,7 +353,7 @@ theorem isOpenEmbedding_of_pullback {X Y S : TopCat} {f : X ⟶ S} {g : Y ⟶ S}
   rfl
 
 @[deprecated (since := "2024-10-18")]
-alias openEmbedding_of_pullback_open_embeddings := isOpenEmbedding_of_pullback_open_embeddings
+alias openEmbedding_of_pullback_open_embeddings := isOpenEmbedding_of_pullback
 
 theorem fst_iso_of_right_embedding_range_subset {X Y S : TopCat} (f : X ⟶ S) {g : Y ⟶ S}
     (hg : IsEmbedding g) (H : Set.range f ⊆ Set.range g) :
