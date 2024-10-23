@@ -6,7 +6,7 @@ Authors: Yury Kudryashov
 import Mathlib.Topology.Algebra.Module.Multilinear.Topology
 import Mathlib.Topology.Algebra.Module.Alternating.Basic
 
-  /-!pconnât
+/-!
 # Topology on continuous alternating maps
 
 In this file we define `UniformSpace` and `TopologicalSpace` structures
