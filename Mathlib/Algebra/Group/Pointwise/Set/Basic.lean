@@ -67,8 +67,7 @@ Because the pointwise action can easily be spelled out in such cases, we give hi
 nat and int actions.
 -/
 
-
-open Function
+open Function MulOpposite
 
 variable {F α β γ : Type*}
 
@@ -131,6 +130,9 @@ noncomputable def singletonOneHom : OneHom α (Set α) where
 @[to_additive (attr := simp)]
 theorem coe_singletonOneHom : (singletonOneHom : α → Set α) = singleton :=
   rfl
+
+@[to_additive (attr := simp)]
+lemma image_op_one [DecidableEq α] : (1 : Set α).image op = 1 := image_singleton
 
 end One
 
