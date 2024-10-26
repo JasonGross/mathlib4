@@ -131,8 +131,7 @@ noncomputable def singletonOneHom : OneHom α (Set α) where
 theorem coe_singletonOneHom : (singletonOneHom : α → Set α) = singleton :=
   rfl
 
-@[to_additive (attr := simp)]
-lemma image_op_one [DecidableEq α] : (1 : Set α).image op = 1 := image_singleton
+@[to_additive] lemma image_op_one : (1 : Set α).image op = 1 := image_singleton
 
 end One
 
